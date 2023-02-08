@@ -14,9 +14,7 @@ from .serializers import (CommentSerializer, FollowSerializer, GroupSerializer,
 class CreateListViewSet(mixins.CreateModelMixin,
                         mixins.ListModelMixin,
                         viewsets.GenericViewSet):
-    """
-    Набор представлений, обеспечивающий действия `create` и `list`.
-    """
+    """Набор представлений, обеспечивающий действия `create` и `list`."""
     pass
 
 
