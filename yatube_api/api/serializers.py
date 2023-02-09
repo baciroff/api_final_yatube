@@ -20,12 +20,12 @@ class GroupSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    post = serializers.ReadOnlyField(source='post.id')
     author = serializers.SlugRelatedField(
         read_only=True, slug_field='username')
 
     class Meta:
         fields = ('id', 'author', 'post', 'text', 'created')
+        read_only_fields = ('post',)
         model = Comment
 
 
@@ -48,7 +48,7 @@ class FollowSerializer(serializers.ModelSerializer):
         ]
 
     def validate(self, data):
-        """Проверяем, что не подписываемся на самого себя."""
-        if self.context['request'].user != data.get('following'):
-            return data
-        raise serializers.ValidationError("Нельзя подписаться на самого себя")
+        if data['following'] == self.context['request'].user:
+            raise serializers.ValidationError(
+                'Нельзя подписаться на самого себя!')
+        return data
